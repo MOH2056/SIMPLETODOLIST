@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const { registerUser, loginUser } = require('../controllers/authController')
+const { createlist, getlist, updatelist, deletelist } = require('../controllers/userController')
 
 
 
-router.post('/register', registerUser)
-router.post('/login', loginUser)
+router.post('/', createlist)
+router.get('/:id', getlist)
+router.put('/:id', updatelist)
+router.delete('/:id', deletelist)
 
 
 module.exports = router;

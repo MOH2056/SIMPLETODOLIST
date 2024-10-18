@@ -2,7 +2,7 @@ const express = require('express');
 const todolist = require('../models/todolist');
 const router = express.Router();
 
-router.post('/create', async(req, res) => {
+const createlist = async(req, res) => {
     try {
         const newtodolist = new todolist(req.body)
         await newtodolist.save()
@@ -14,9 +14,9 @@ router.post('/create', async(req, res) => {
         .status(500)
         .json({error: error.message})
     }
-})
+}
 
-router.get('/get/:id', async(req, res) => {
+const getlist = async(req, res) => {
     try {
         const todolists = await todolist.findById(req.params.id)
         if(!todolists) {
@@ -36,9 +36,9 @@ router.get('/get/:id', async(req, res) => {
             error: error.message
         })
     }
-})
+}
 
-router.put ('/update/:id', async (req, res) => {
+const updatelist = async (req, res) => {
     try {
         const updateTodo = await todolist.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
         if (!updateTodo) {
@@ -46,19 +46,19 @@ router.put ('/update/:id', async (req, res) => {
             .status(400)
             .json('Error')
         }
-        res
+        return res
         .status(200)
         .json(updateTodo)
     } catch(error) {
-        res
+        return res
         .status(500)
         .json({
             error: error.message
         })
     }
-})
+}
 
-router.delete ('/delete/:id', async(req, res) => {
+const deletelist = async (req, res) => {
     try {
         const deleteTodo = await todolist.findByIdAndDelete(req.params.id)
         if (!deleteTodo) {
@@ -81,5 +81,5 @@ router.delete ('/delete/:id', async(req, res) => {
             error: error.message
         })
     }
-})
-module.exports = router;
+}
+module.exports = {createlist, getlist, updatelist, deletelist};
