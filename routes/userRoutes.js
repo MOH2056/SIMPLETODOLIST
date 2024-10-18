@@ -4,10 +4,10 @@ const { createlist, getlist, updatelist, deletelist } = require('../controllers/
 
 
 
-router.post('/', createlist)
-router.get('/:id', getlist)
-router.put('/:id', updatelist)
-router.delete('/:id', deletelist)
+router.post('/todo', createlist)
+router.get('/todo/:id', getlist)
+router.put('/todo/:id', updatelist)
+router.delete('/todo/:id', deletelist)
 
 
 module.exports = router;
