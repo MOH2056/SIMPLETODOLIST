@@ -1,6 +1,4 @@
-const express = require('express');
-const todolist = require('../models/todolist');
-const router = express.Router();
+import todolist from '../models/todolist.js'
 
 const createlist = async(req, res) => {
     try {
@@ -82,4 +80,5 @@ const deletelist = async (req, res) => {
         })
     }
 }
-module.exports = {createlist, getlist, updatelist, deletelist};
+
+export { createlist, getlist, updatelist, deletelist };

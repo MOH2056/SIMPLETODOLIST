@@ -1,4 +1,4 @@
-const dbuser = require('../models/user')
+import dbuser from '../models/user.js'
 
 const getalluser = async (req, res) =>{
     const {username, location, age} = req.body
@@ -99,4 +99,5 @@ const deletebyId = async (req,res) =>{
 
     }
 }
-module.exports = {getalluser, updateuser, getbyId, deletebyId}
+
+export  { getalluser, getbyId, updateuser, deletebyId }

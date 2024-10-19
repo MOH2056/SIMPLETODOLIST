@@ -1,6 +1,6 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { createlist, getlist, updatelist, deletelist } = require('../controllers/todoController')
+import { createlist, getlist, updatelist, deletelist } from '../controllers/todoController.js';
 
 
 
@@ -10,4 +10,4 @@ router.put('/todo/:id', updatelist)
 router.delete('/todo/:id', deletelist)
 
 
-module.exports = router;
+export default router;

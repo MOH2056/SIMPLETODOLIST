@@ -1,7 +1,9 @@
-const User = require('../models/user');
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
-require('dotenv').config()
+import User from '../models/user.js'
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const registerUser = async (req, res) => {
     const {username, password, location, age} = req.body
@@ -92,5 +94,4 @@ const loginUser = async (req, res) => {
         return res.status(500).json({ message: "Internal server error" });
     }
 }
-
-module.exports = { registerUser, loginUser };
+export  {registerUser, loginUser};
