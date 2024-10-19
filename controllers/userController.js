@@ -1,85 +1,102 @@
-const express = require('express');
-const todolist = require('../models/todolist');
-const router = express.Router();
+const dbuser = require('../models/user')
 
-const createlist = async(req, res) => {
+const getalluser = async (req, res) =>{
+    const {username, location, age} = req.body
     try {
-        const newtodolist = new todolist(req.body)
-        await newtodolist.save()
-        res
-        .status(201)
-        .json(newtodolist)
-    } catch(error) {
-        res
-        .status(500)
-        .json({error: error.message})
-    }
-}
-
-const getlist = async(req, res) => {
-    try {
-        const todolists = await todolist.findById(req.params.id)
-        if(!todolists) {
-            return res
-            .status(404)
+        const user = await dbuser.find(username, location, age)
+        if (!user) {
+            return res 
+            .status(400)
             .json({
-                error: 'Not found'
-            });
+                message: 'User does not exist',
+                status: 'Error',
+                status_code: 400
+            })
         }
-        res
+        return res
         .status(200)
-        .json(todolists)
-    } catch(error) {
-        res
-        .status(500)
         .json({
-            error: error.message
+            message: 'User found',
+            status: 'success',
+            status_code: 200,
+            displayall: user
         })
+    } catch(error) {
+        return res.status(500).json({ message: "Internal server error" });
     }
 }
 
-const updatelist = async (req, res) => {
-    try {
-        const updateTodo = await todolist.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
-        if (!updateTodo) {
+const getbyId = async (req,res) =>{
+    try{
+        const getid = await dbuser.findById(req.params.id)
+        if (!getid) {
             return res
             .status(400)
-            .json('Error')
+            .json({
+                message: 'NOT FOUND',
+                status: 'Error',
+                status_code: 400
+            })
         }
         return res
         .status(200)
-        .json(updateTodo)
-    } catch(error) {
-        return res
-        .status(500)
         .json({
-            error: error.message
+            message: 'USER FOUND',
+            status: 'success',
+            status_code:200,
+            info:getid
         })
+    }catch(error){
+
     }
 }
 
-const deletelist = async (req, res) => {
-    try {
-        const deleteTodo = await todolist.findByIdAndDelete(req.params.id)
-        if (!deleteTodo) {
-            return res
-            .status(404)
+const updateuser = async (req, res) => {
+    try{
+        const update = await dbuser.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+        if (!update) {
+            return res 
+            .status(400)
             .json({
-                error: 'To-Do not found'
-            });
-        } else{
-            res
-            .status(200)
-            .json({ 
-                message: 'To-Do deleted successfully'
-            });
+                message: 'CHANGE NOT EFFECTIVE',
+                status: 'Error',
+                status_code: 400
+            })
         }
-    } catch(error){
-        res
-        .status(500)
+        return res
+        .status(200)
         .json({
-            error: error.message
+            message: 'DONE',
+            status: 'success',
+            status_code:200,
+            update
         })
+    }catch(error) {
+        return res.status(500).json({ message: "Internal server error" });
     }
 }
-module.exports = {createlist, getlist, updatelist, deletelist};
+
+const deletebyId = async (req,res) =>{
+    try{
+        const deleteby = await dbuser.findById(req.params.id)
+        if (!deleteby) {
+            return res
+            .status(400)
+            .json({
+                message: 'USER DOES NOT EXIST',
+                status: 'Error',
+                status_code: 400
+            })
+        }
+        return res
+        .status(200)
+        .json({
+            message: 'USER DELETE',
+            status: 'success',
+            status_code:200
+        })
+    }catch(error){
+
+    }
+}
+module.exports = {getalluser, updateuser, getbyId, deletebyId}

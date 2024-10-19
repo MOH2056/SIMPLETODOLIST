@@ -4,12 +4,12 @@ const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
 const registerUser = async (req, res) => {
-    const {username, password} = req.body
-    if (!username || !password) {
+    const {username, password, location, age} = req.body
+    if (!username || !password || !location || !age) {
         return res
         .status(400)
         .json({
-            message: 'Provide username and password',
+            message: 'Required',
             status: 'Error',
             status_code: 400,
         });  
@@ -27,7 +27,7 @@ const registerUser = async (req, res) => {
             });
         }
        const hashedPwd = await bcrypt.hash(password, 10)
-       const newUser = new User({username, "password": hashedPwd});
+       const newUser = new User({username, "password": hashedPwd, location, age});
        //const newUser = new User({username, password});
        await newUser.save();
         
